@@ -4,7 +4,7 @@
 #
 Name     : pyalsaaudio
 Version  : 0.8.4
-Release  : 7
+Release  : 8
 URL      : https://files.pythonhosted.org/packages/52/b6/44871791929d9d7e11325af0b7be711388dfeeab17147988f044a41a6d83/pyalsaaudio-0.8.4.tar.gz
 Source0  : https://files.pythonhosted.org/packages/52/b6/44871791929d9d7e11325af0b7be711388dfeeab17147988f044a41a6d83/pyalsaaudio-0.8.4.tar.gz
 Summary  : ALSA bindings
@@ -17,6 +17,7 @@ BuildRequires : alsa-lib-dev
 BuildRequires : buildreq-distutils3
 
 %description
+This package contains wrappers for accessing the ALSA API from Python.
 It is fairly complete for PCM devices and Mixer access.
 
 %package license
@@ -40,6 +41,7 @@ python components for the pyalsaaudio package.
 Summary: python3 components for the pyalsaaudio package.
 Group: Default
 Requires: python3-core
+Provides: pypi(pyalsaaudio)
 
 %description python3
 python3 components for the pyalsaaudio package.
@@ -47,19 +49,28 @@ python3 components for the pyalsaaudio package.
 
 %prep
 %setup -q -n pyalsaaudio-0.8.4
+cd %{_builddir}/pyalsaaudio-0.8.4
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1541255197
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1583204293
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pyalsaaudio
-cp LICENSE %{buildroot}/usr/share/package-licenses/pyalsaaudio/LICENSE
+cp %{_builddir}/pyalsaaudio-0.8.4/LICENSE %{buildroot}/usr/share/package-licenses/pyalsaaudio/bf948988e1d6850c18ac24c94ce9604f4d3fc890
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -70,7 +81,7 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pyalsaaudio/LICENSE
+/usr/share/package-licenses/pyalsaaudio/bf948988e1d6850c18ac24c94ce9604f4d3fc890
 
 %files python
 %defattr(-,root,root,-)
