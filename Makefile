@@ -1,5 +1,5 @@
 PKG_NAME := pyalsaaudio
-URL = https://files.pythonhosted.org/packages/52/b6/44871791929d9d7e11325af0b7be711388dfeeab17147988f044a41a6d83/pyalsaaudio-0.8.4.tar.gz
+URL = https://files.pythonhosted.org/packages/23/b1/672d496718562301ce2052b07196ca31874e4f1a497881ae44b2279a4e1d/pyalsaaudio-0.9.0.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
